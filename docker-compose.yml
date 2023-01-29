@@ -1,0 +1,41 @@
+version: "2.0"
+services:
+  rabbitmq:
+    image: "rabbitmq:3.11-management"
+    ports:
+        - "5672:5672"
+        - "15672:15672"
+    networks:
+        - "sms-network"
+    restart: "on-failure"
+  sender_0:
+    build:
+      context: "."
+      dockerfile: "Dockerfile_api_filter"
+    ports:
+      - "3001:8000"
+    networks:
+      - "sms-network"
+    depends_on:
+        - worker_0
+    restart: "on-failure"
+  worker_0:
+    build:
+      context: "."
+      dockerfile: "Dockerfile_api_worker"
+    networks:
+      - "sms-network"
+    depends_on:
+      - "rabbitmq"
+    restart: "on-failure"
+  worker_1:
+    build:
+      context: "."
+      dockerfile: "Dockerfile_api_worker"
+    networks:
+      - "sms-network"
+    depends_on:
+      - "rabbitmq"
+    restart: "on-failure"
+networks:
+  sms-network: {}

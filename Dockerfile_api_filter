@@ -1,0 +1,7 @@
+FROM node:18-alpine
+WORKDIR /app
+COPY . .
+RUN yarn install --production
+RUN apk --no-cache add curl
+CMD ["node", "api_filter.js"]
+EXPOSE 8000:8000
