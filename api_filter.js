@@ -8,6 +8,7 @@ const Koa = require('koa');
 const app = new Koa();
 http.createServer(app.callback()).listen(8000);
 
+// test
 
 app.use(async ctx => {
     amqp.connect('amqp://guest:guest@rabbitmq', function(error0, connection) {
